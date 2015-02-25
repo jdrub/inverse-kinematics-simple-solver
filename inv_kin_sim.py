@@ -50,6 +50,10 @@ x2 = 2
 y2 = 3
 z2 = 4
 
+# used to delete windows more than 2 plots old
+# one older plot is kept to make the 'animation' look more fluid
+tmp = 1
+
 while True:
 	
 	A = math.acos(((math.pow(x2,2) + math.pow(y2,2)) + 
@@ -117,23 +121,20 @@ while True:
 	c = getch()
 
 	if c == 'q':
-		break;
+		break;q
 
 	if(c == 'w'):
 		y2 = y2+0.5
-		fig.clf()
 	if(c == 's'):
 		y2 = y2-0.5
-		fig.clf()
 	if(c == 'a'):
 		x2 = x2-0.5
-		fig.clf()
 	if(c == 'd'):
 		x2 = x2+0.5
-		fig.clf()
 	if(c == 'j'):
 		z2 = z2-0.5
-		fig.clf()
 	if(c == 'k'):
 		z2 = z2+0.5
-		fig.clf()
+	if(tmp > 1):
+		plt.close(tmp-1)
+	tmp = tmp+1
