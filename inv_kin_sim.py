@@ -64,17 +64,16 @@ while True:
 
 	t0 = A + B
 
-
 	t1 = math.acos( (math.pow(l2+l3,2) + math.pow(l1,2) - 
 		(math.pow(x2,2) + math.pow(y2,2))) / (2 * l1 * (l2+l3)))
+
+	if y2 < 0:
+		t0 = math.pi/2 - t0
 
 	x3 = l1*math.cos(t0)
 	y3 = l1*math.sin(t0)
 
 	l4 = math.sqrt(math.pow(x2-x3,2) + math.pow(y2-y3,2))
-
-	# print "thing: " + str((math.pow(l2,2) + math.pow(l3,2) - math.pow(l4,2)) 
-	# 	/ (2*l2*l3))
 
 	# t2 = math.acos( (math.pow(l2,2) + math.pow(l3,2) - math.pow(l4,2)) 
 	# 	/ (2*l2*l3))
@@ -82,6 +81,9 @@ while True:
 	t2 = math.pi
 
 	t3 = math.acos(x2/(math.sqrt(math.pow(x2,2) + math.pow(z2,2))))
+
+	print "t0: " + str(t0)
+	print "t1: " + str(t1)
 
 	p1x = l1*math.cos(t0)
 	p1y = l1*math.sin(t0)
