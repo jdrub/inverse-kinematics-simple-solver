@@ -12,7 +12,7 @@ direction, respectively. The math most likely isn't correct for this function at
 
 x - changes perspective to show the X-axis on the horizontal axis
 
-z - changes perspective to show the y-axis on the horizontal axis
+z - changes perspective to show the z-axis on the horizontal axis
 
 i - changes perspective to an isomorphic view
 
