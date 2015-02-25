@@ -1,9 +1,11 @@
 import math
 import matplotlib.pyplot as plt
-import numpy as np
 from mpl_toolkits.mplot3d import Axes3D
 
 import sys
+
+def clean_cos(cos_angle):
+    return min(1,max(cos_angle,-1))
 
 try:
     import tty, termios
@@ -48,8 +50,10 @@ l3 = 1
 
 x2 = 2
 y2 = 3
-z2 = 4
+z2 = 0
 
+X = True
+Z = False
 # used to delete windows more than 2 plots old
 # one older plot is kept to make the 'animation' look more fluid
 tmp = 1
@@ -76,14 +80,28 @@ while True:
 	l4 = math.sqrt(math.pow(x2-x3,2) + math.pow(y2-y3,2))
 
 	# t2 = math.acos( (math.pow(l2,2) + math.pow(l3,2) - math.pow(l4,2)) 
-	# 	/ (2*l2*l3))
+		# / (2*l2*l3))
 
 	t2 = math.pi
 
-	t3 = math.acos(x2/(math.sqrt(math.pow(x2,2) + math.pow(z2,2))))
 
-	print "t0: " + str(t0)
-	print "t1: " + str(t1)
+	a = math.sqrt(math.pow(l1,2) 
+		+ math.pow(l2+l3,2) - 2*l1*(l2+l3)*math.cos(t1))
+	# print "a: " + str(a)
+	if y2 > a:
+		tv = math.pi/2
+	else:
+		tv = math.asin(y2/a)
+	lp = a*math.cos(tv)
+	# print "lp: " + str(lp)
+	# print "z2/lp: " + str(z2/lp)
+	# print "z2: " + str(z2)
+	t3 = math.asin(clean_cos(z2/lp))
+	
+	
+	# print "t0: " + str(t0)
+	# print "t1: " + str(t1)
+	
 
 	p1x = l1*math.cos(t0)
 	p1y = l1*math.sin(t0)
@@ -102,15 +120,21 @@ while True:
 	plt.ion()
 	fig = plt.figure()
 	ax = fig.add_subplot(111, projection='3d')
-	ax.set_autoscale_on(False)
-	ax.autoscale_view(False,False,False)
 	ax.set_xlim(-5,5)
 	ax.set_xlabel('z')
 	ax.set_ylim(-5,5)
 	ax.set_ylabel('x')
 	ax.set_zlim(0,5)
 	ax.set_zlabel('y')
-	ax.view_init(elev=0., azim=0)
+	if X == True:
+		ax.set_autoscale_on(False)
+		ax.autoscale_view(False,False,False)
+		ax.view_init(elev=0., azim=0)
+	elif Z == True:
+		ax.set_autoscale_on(False)
+		ax.autoscale_view(False,False,False)
+		ax.view_init(elev=0., azim=-90)
+
 
 	ax.scatter([p0z],[p0x],[p0y],color="g",s=100)
 	ax.scatter([p1z],[p1x],[p1y],color="g",s=100)
@@ -125,18 +149,27 @@ while True:
 	if c == 'q':
 		break;q
 
-	if(c == 'w'):
+	elif(c == 'w'):
 		y2 = y2+0.5
-	if(c == 's'):
+	elif(c == 's'):
 		y2 = y2-0.5
-	if(c == 'a'):
+	elif(c == 'a'):
 		x2 = x2-0.5
-	if(c == 'd'):
+	elif(c == 'd'):
 		x2 = x2+0.5
-	if(c == 'j'):
+	elif(c == 'j'):
 		z2 = z2-0.5
-	if(c == 'k'):
+	elif(c == 'k'):
 		z2 = z2+0.5
+	elif(c == 'x'):
+		X = True
+		Z = False
+	elif(c == "z"):
+		Z = True
+		X = False
+	elif(c == 'i'):
+		Z = False
+		X = False
 	if(tmp > 1):
 		plt.close(tmp-1)
 	tmp = tmp+1
