@@ -40,17 +40,23 @@ else:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
         return ch
 
+def dist(x,y,z):
+	return math.sqrt(math.pow(x,2) + math.pow(y,2) + math.pow(z,2))
+
+
 p0x = 0
 p0y = 0
 p0z = 0
 
-l1 = 4
+l1 = 3
 l2 = 2
-l3 = 1
+l3 = 0.6
 
-x2 = 2
-y2 = 3
+x2 = 1
+y2 = 2.5
 z2 = 0
+
+ta2 = math.pi/2
 
 X = True
 Z = False
@@ -61,46 +67,37 @@ tmp = 1
 while True:
 	
 	A = math.acos(((math.pow(x2,2) + math.pow(y2,2)) + 
-	(math.pow(l1,2)) - math.pow(l2+l3,2)) / 
+	(math.pow(l1,2)) - math.pow(l2,2)) / 
 	(2 * l1 * math.sqrt(math.pow(x2,2) + math.pow(y2,2))))
 
 	B = math.acos(x2/math.sqrt(math.pow(x2,2) + math.pow(y2,2)))
 
 	t0 = A + B
-
-	t1 = math.acos( (math.pow(l2+l3,2) + math.pow(l1,2) - 
-		(math.pow(x2,2) + math.pow(y2,2))) / (2 * l1 * (l2+l3)))
-
 	if y2 < 0:
-		t0 = math.pi/2 - t0
+		t0 = math.pi/2-t0
+
+	t1 = math.acos( (math.pow(l2,2) + math.pow(l1,2) - 
+		(math.pow(x2,2) + math.pow(y2,2))) / (2 * l1 * (l2)))
 
 	x3 = l1*math.cos(t0)
 	y3 = l1*math.sin(t0)
 
 	l4 = math.sqrt(math.pow(x2-x3,2) + math.pow(y2-y3,2))
 
-	# t2 = math.acos( (math.pow(l2,2) + math.pow(l3,2) - math.pow(l4,2)) 
-		# / (2*l2*l3))
+	t2 = 2*math.pi - ta2 - t0 - t1
 
-	t2 = math.pi
+	# t2 = math.pi
 
 
 	a = math.sqrt(math.pow(l1,2) 
-		+ math.pow(l2+l3,2) - 2*l1*(l2+l3)*math.cos(t1))
-	# print "a: " + str(a)
+		+ math.pow(l2,2) - 2*l1*(l2)*math.cos(t1))
 	if y2 > a:
 		tv = math.pi/2
 	else:
 		tv = math.asin(y2/a)
 	lp = a*math.cos(tv)
-	# print "lp: " + str(lp)
-	# print "z2/lp: " + str(z2/lp)
-	# print "z2: " + str(z2)
+
 	t3 = math.asin(clean_cos(z2/lp))
-	
-	
-	# print "t0: " + str(t0)
-	# print "t1: " + str(t1)
 	
 
 	p1x = l1*math.cos(t0)
@@ -111,10 +108,8 @@ while True:
 	p2y = p1y + l2*math.sin(- (math.pi - t1 - t0))
 	p2z = p2x*math.sin(t3)
 
-	# p3x = p2x + l3*math.cos(math.pi - t2 - t1)
-	# p3y = p2y + l3*math.sin(math.pi - t2 - t1)
-	p3x = p2x + l3*math.cos(-(math.pi - t1 - t0))
-	p3y = p2y + l3*math.sin(-(math.pi - t1 - t0))
+	p3x = p2x + l3*math.cos( (math.pi - t2 - t1 - t0))
+	p3y = p2y + l3*math.sin( (math.pi - t2 - t1 - t0))
 	p3z = p3x*math.sin(t3)
 
 	plt.ion()
@@ -146,21 +141,45 @@ while True:
 	
 	c = getch()
 
+	maxDist = l1+l2+l3
+
 	if c == 'q':
 		break;q
 
 	elif(c == 'w'):
 		y2 = y2+0.5
+		if dist(x2,y2,z2) > maxDist or dist(x2,y2,z2) < l1-(l2) :
+			print "impossible coordinates!"
+			y2 = y2-0.5
 	elif(c == 's'):
 		y2 = y2-0.5
+		if dist(x2,y2,z2) > maxDist or dist(x2,y2,z2) < l1-(l2) :
+			print "impossible coordinates!"
+			y2 = y2+0.5
 	elif(c == 'a'):
 		x2 = x2-0.5
+		if dist(x2,y2,z2) > maxDist or dist(x2,y2,z2) < l1-(l2) :
+			print "impossible coordinates!"
+			x2 = x2+0.5
 	elif(c == 'd'):
 		x2 = x2+0.5
+		if dist(x2,y2,z2) > maxDist or dist(x2,y2,z2) < l1-(l2) :
+			print "impossible coordinates!"
+			x2 = x2-0.5
 	elif(c == 'j'):
 		z2 = z2-0.5
+		if dist(x2,y2,z2) > maxDist or dist(x2,y2,z2) < l1-(l2) :
+			print "impossible coordinates!"
+			z2 = z2+0.5
 	elif(c == 'k'):
 		z2 = z2+0.5
+		if dist(x2,y2,z2) > maxDist or dist(x2,y2,z2) < l1-(l2) :
+			print "impossible coordinates!"
+			z2 = z2-0.5
+	elif(c == 'r'):
+		ta2 = ta2 + 0.3
+	elif(c == 'f'):
+		ta2 = ta2 - 0.3
 	elif(c == 'x'):
 		X = True
 		Z = False

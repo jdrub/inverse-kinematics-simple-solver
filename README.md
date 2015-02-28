@@ -16,4 +16,8 @@ z - changes perspective to show the z-axis on the horizontal axis
 
 i - changes perspective to an isomorphic view
 
+r - increases absolute angle of end effector
+
+f - decreases absolute angle of end effector
+
 q - quits program
