@@ -52,8 +52,8 @@ l1 = 3
 l2 = 2
 l3 = 0.6
 
-x2 = 1
-y2 = 2.5
+x2 = 2
+y2 = 3
 z2 = 0
 
 ta2 = math.pi/2
@@ -73,21 +73,22 @@ while True:
 	B = math.acos(x2/math.sqrt(math.pow(x2,2) + math.pow(y2,2)))
 
 	t0 = A + B
-	if y2 < 0:
-		t0 = math.pi/2-t0
 
 	t1 = math.acos( (math.pow(l2,2) + math.pow(l1,2) - 
 		(math.pow(x2,2) + math.pow(y2,2))) / (2 * l1 * (l2)))
+
+	if y2 < 0:
+		c = math.sqrt(math.pow(l1,2) + math.pow(l2,2) - 2*l1*l2*math.cos(t1))
+		ta = math.acos((math.pow(l1,2) + math.pow(c,2) - math.pow(l2,2)) / (2*l1*c))
+		t0 = 2*ta - t0
+
 
 	x3 = l1*math.cos(t0)
 	y3 = l1*math.sin(t0)
 
 	l4 = math.sqrt(math.pow(x2-x3,2) + math.pow(y2-y3,2))
 
-	t2 = 2*math.pi - ta2 - t0 - t1
-
-	# t2 = math.pi
-
+	t2 = - ta2 - t0 - t1
 
 	a = math.sqrt(math.pow(l1,2) 
 		+ math.pow(l2,2) - 2*l1*(l2)*math.cos(t1))
@@ -141,7 +142,7 @@ while True:
 	
 	c = getch()
 
-	maxDist = l1+l2+l3
+	maxDist = l1+l2
 
 	if c == 'q':
 		break;q
